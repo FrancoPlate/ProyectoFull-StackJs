@@ -1,0 +1,259 @@
+/*
+paleta dee colores
+Gulf Stream
+#82b5b5
+
+White
+#ffffff
+
+Ebb
+#f2eded
+
+Botticelli
+#c5e2e2
+
+Ship Cove
+#6e91b4
+
+*/
+*{
+    font-family:Verdana, Geneva, Tahoma, sans-serif;
+}
+:root {
+    --primary-color: #82b5b5;
+    --secondary-color: #f2eded;
+    --text-dark: #333;
+    --text-light: #f9f9f9;
+}
+
+body{
+    margin: 0;
+    background-color: var(--primary-color);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+}
+
+main{
+    display: block ;
+    background-color: var(--secondary-color);
+    
+    height: 100vh;
+    width: 100%;
+}
+footer{
+    background-color: #010101;
+    display: flex;
+    min-width: 100%;
+    width: auto;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 0;
+}
+/*-------Header-----------*/
+.video-background {
+    position: relative;
+    height: 100vh;
+    width: 100%;
+    overflow: hidden;
+}
+.video-background video {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
+    z-index: -1;
+    transform: translate(-50%, -50%);
+    object-fit: cover;
+}
+
+/*---nav----*/
+.contenido{
+    position: relative;
+    z-index: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(10px);
+    background-color: #f2eded2c; /* opcional */
+}
+
+.img_logo{
+    height: 60px;
+    width: 60px;
+}
+
+.barra_navegadora{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    margin-left: 200px;
+}
+
+.barra_navegadora li{
+    list-style: none;
+    background-color: transparent;
+    margin: 8px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.5s ease;
+}
+
+.barra_navegadora li a {
+    color: var(--text-light);
+    text-decoration: none;
+    padding: 16px;
+    font-weight: bold;
+    font-size: 18px;
+    transition: color 0.5s ease;
+}
+.barra_navegadora li a:hover {
+    
+    color: var(--primary-color);
+    transition: color 0.5s ease;
+}
+
+/*------ Medio de la pantalla-----------*/
+
+.overlay{
+    font-size: 32px;
+    position: relative;
+    z-index: 1;
+    color: black;
+    text-align: center;
+    padding-top: 30vh;
+    backdrop-filter: blur(10px);
+    background-color: #f2eded2c; /* opcional */
+}
+
+/*-------footer----------*/
+
+.img_logo_footer{
+    
+    height: 100px;
+    width: 100px;
+    
+}
+
+
+.mitad-izq{
+    display: flex;
+    width: auto;
+    min-height: 100%;
+    max-width: 50%;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.mitad-izq li{
+    display: flex;
+    list-style: none;
+    background-color: transparent;
+    margin-right: 250px;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 0.5rem;
+}
+.mitad-izq li svg {
+    color: var(--text-light);
+    font-weight: bold;
+    font-size: 14px;
+    margin-right: 0.5rem;
+}
+
+.mitad-izq li a {
+    color: var(--text-light);
+    font-weight: bold;
+    font-size: 14px;
+}
+
+/*---*/
+.mitad-der{
+    display: flex;
+    width: auto;
+    min-height: 100%;
+    max-width: 50%;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+}
+.mitad-der ul{
+    padding-left: 0;
+    padding-right: 40px;
+}
+.mitad-der li{
+    list-style: none;
+    background-color: transparent;
+    margin-left: 250px;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 0.5rem;
+}
+
+.mitad-der li a {
+    color: var(--text-light);
+    font-weight: bold;
+    text-decoration: none;
+    font-size: 14px;
+    transition: color 0.5s ease;
+}
+
+.mitad-der li a:hover{
+    color: var(--primary-color);
+    transition: color 0.5s ease;
+}
+
+
+
+
+/*--------------*/
+
+.port-venta{
+    margin-left: 5rem;
+    height: 20rem;
+    background-color: gray;
+    width: 15rem;
+    border-radius: 0.5rem;
+}
+.port-venta picture img{
+    height: 50%;
+    width: 100%;
+    background-color: red;
+    border-radius: 0.5rem 0.5rem 0 0;
+}
+
+.des{
+    display: flex;
+    height: 50%;
+    flex-direction: column;
+}
+.des-precio{
+   height: 3.5rem;
+    margin: 1rem 1rem;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    font-weight: bold;
+    font-size: 1.3rem;
+}
+
+.des-nombre {
+    height: 3.5rem;
+    margin: 0 1rem;
+    margin-bottom: 0;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    font-weight: bold;
+}
