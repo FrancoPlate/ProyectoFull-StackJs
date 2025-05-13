@@ -40,7 +40,7 @@ main{
     background-color: var(--secondary-color);
     
     height: 100vh;
-    width: 100%;
+    width: 99vw;
 }
 footer{
     background-color: #010101;
@@ -206,26 +206,113 @@ footer{
     font-weight: bold;
     text-decoration: none;
     font-size: 14px;
-    transition: color 0.5s ease;
+    transition: color 5s ease-in-out;
+    
 }
 
 .mitad-der li a:hover{
     color: var(--primary-color);
-    transition: color 0.5s ease;
+    transition: color 0.5s ease-in-out;
 }
 
 
+/* Posible diseño
+.mitad-der li a {
+    color: var(--text-dark);
+    font-weight: bold;
+    text-decoration: none;
+    font-size: 14px;
+    padding: 0.5rem;
+    background: linear-gradient(to left, #fff 50%, #000 50% );
+    background-size: 200% 100%;
+    background-position: right;
+    transition: background-position 0.5s ,color 1s ease;
+    
+}
+
+.mitad-der li a:hover{
+    color: var(--primary-color);
+    background-position: left;
+}*/
 
 
-/*--------------*/
+/*------ ventas--------*/
+.ventas{
+    width: 99vw;
+    height: 100vh;
+    display: flex;
+}
+
+.filtros{
+    background: var(--secondary-color);
+    width: 20vw;
+    display: flex;
+    justify-content: flex-end;
+    z-index: 1;
+}
+.filtros ul{
+    padding-left: 0;
+    padding-right: 1.5rem;
+        margin-top: 13rem;
+}
+.filtros ul li{
+    list-style: none;
+    display: flex;
+    height: 36px;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.filtros ul li p{
+    font-weight: bold;
+    font-size: 1rem;
+}
+
+.ventas span{
+    background: #7777772c;
+    height: 35rem;
+    width: 3px;
+    position: relative;
+    top: 13rem;
+    z-index: 1;
+}
+
+
+.conteiner-cart{
+    /*margin-top: 2.5rem;
+    padding: 2.5rem;*/
+    width: 74vw;
+    min-height: 86vh;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    align-content: center;
+
+}
 
 .port-venta{
-    margin-left: 5rem;
+    margin: 1.5rem 2rem;
     height: 20rem;
-    background-color: gray;
+    background-color: var(--secondary-color);
     width: 15rem;
     border-radius: 0.5rem;
+    border: solid #9b9b9b54;
+    box-shadow: 0px 0px 10px 1px #9b9b9bcc;
+    transition: transform 0.5s ease,
+                box-shadow 0.5s ease-in-out,
+                border 0.5s ease-in-out;
+    cursor: pointer;
 }
+
+.port-venta:hover{
+    transform: translateY(-10px);
+    box-shadow: 0px 0px 10px 1px var(--primary-color);
+    border: solid var(--primary-color);
+}
+
 .port-venta picture img{
     height: 50%;
     width: 100%;
@@ -245,13 +332,12 @@ footer{
     align-items: center;
     flex-direction: row;
     font-weight: bold;
-    font-size: 1.3rem;
+    font-size: 1.2rem;
 }
 
 .des-nombre {
     height: 3.5rem;
-    margin: 0 1rem;
-    margin-bottom: 0;
+    margin: 0.5rem 0.5rem;
     display: flex;
     align-items: center;
     flex-direction: row;
