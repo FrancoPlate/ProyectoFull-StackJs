@@ -38,8 +38,6 @@ body{
 main{
     display: block ;
     background-color: var(--secondary-color);
-    
-    height: 100vh;
     width: 99vw;
 }
 footer{
@@ -120,7 +118,7 @@ footer{
     transition: color 0.5s ease;
 }
 
-/*------ Medio de la pantalla-----------*/
+/*------ Medio de la pantalla video-----------*/
 
 .overlay{
     font-size: 32px;
@@ -206,7 +204,7 @@ footer{
     font-weight: bold;
     text-decoration: none;
     font-size: 14px;
-    transition: color 5s ease-in-out;
+    transition: color 0.5s ease-in-out;
     
 }
 
@@ -342,4 +340,62 @@ footer{
     align-items: center;
     flex-direction: row;
     font-weight: bold;
+}
+
+
+/*------Informacion adiccionar--------*/
+
+
+.Info-adic{
+    width: 99vw;
+    height: 100vh;
+    background: linear-gradient(var(--secondary-color), #000);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+}
+
+.conteiner-Info{
+    height: 50vh;
+    width: 75vw;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    flex-direction: row;
+}
+
+.carta-Info{
+    width: 20rem;
+    height: 30rem;
+    background: white;
+    border-radius: 10px;
+    border: solid 1px black;
+}
+
+.carta-Info svg{
+    height: 16%;
+    width: 100%;
+    margin: 2rem 0 ;
+    stroke: var(--primary-color);
+}
+
+.carta-Info-Text{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.carta-Info-Text h4{
+    width: 280px;
+    font-size:16px;
+    margin: 1.5rem 0;
+    text-align: center;
+}
+
+.carta-Info-Text p{
+    text-align: center;
+    width: 18rem;
+    margin: 1.5rem 0;
 }
