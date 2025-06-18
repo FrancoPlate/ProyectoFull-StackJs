@@ -72,6 +72,20 @@ header{
     backdrop-filter: blur(10px);
     background-color: #000000; /* opcional */
 }
+.contenido a svg{
+    cursor: pointer;
+    margin: 0.5rem;
+    margin-left: 1rem;
+    padding: 0.5rem;
+    transition: stroke 1s ease-in-out, transform 0.5s ease;; 
+
+}
+.contenido a svg:hover{
+    stroke: var(--primary-color);
+    transition: stroke 1s ease-in-out,
+                transform 0.5s ease;
+    transform: scale(1.25);
+}
 
 .img_logo{
     height: 60px;
@@ -122,9 +136,8 @@ header{
 
 .mitad-izq{
     display: flex;
-    width: auto;
+    width: 50%;
     min-height: 100%;
-    max-width: 50%;
     align-items: center;
     flex-direction: column;
     justify-content: center;
@@ -156,9 +169,8 @@ header{
 /*---*/
 .mitad-der{
     display: flex;
-    width: auto;
+    width: 50%;
     min-height: 100%;
-    max-width: 50%;
     align-items: center;
     flex-direction: column;
     justify-content: center;
@@ -192,10 +204,24 @@ header{
     transition: color 0.5s ease;
 }
 
+/*--------*/
+.Informar{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    text-align: center;
+    background: var(--primary-color);
+    color: var(--text-light);
+    font-size: 1.1rem;
+    font-weight: bold;
+    
+}
+
 /*------ ventas--------*/
 .ventas{
     width: 99vw;
-    height: 100vh;
+    height: 96vh;
     display: flex;
 }
 
@@ -236,32 +262,25 @@ header{
 /*------Cartas------*/
 
 .conteiner-cart{
-    /*margin-top: 2.5rem;
-    padding: 2.5rem;*/
     width: 74vw;
-    min-height: 86vh;
     display: flex;
     flex-wrap: wrap;
-    flex-direction: row;
-    flex-direction: row;
-    align-items: center;
     justify-content: center;
     align-content: center;
-
 }
 
 .port-venta{
     margin: 1.5rem 2rem;
-    height: 20rem;
+     height: 20rem; 
+    width: 14rem;
     background-color: var(--secondary-color);
-    width: 15rem;
     border-radius: 0.5rem;
     border: solid #9b9b9b54;
     box-shadow: 0px 0px 10px 1px #9b9b9bcc;
     transition: transform 0.5s ease,
                 box-shadow 0.5s ease-in-out,
                 border 0.5s ease-in-out;
-    cursor: pointer;
+    
 }
 
 .port-venta:hover{
@@ -282,6 +301,20 @@ header{
     height: 50%;
     flex-direction: column;
 }
+
+.des button{
+    padding: 0.5rem;
+    border:none;
+    border-top: solid 1px #9b9b9b54;
+    border-radius: 0 0 0.3rem 0.3rem;
+    cursor: pointer;
+    transition: background 0.5s ease;
+}
+.des button:hover{
+    
+    background: var(--primary-color);
+}
+
 .des-precio{
    height: 3.5rem;
     margin: 1rem 1rem;
@@ -302,6 +335,98 @@ header{
 }
 
 
+
+/*Carrito*/
+
+.Carrito{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.Carrito h2{
+    margin: 3rem auto;
+    padding: 2rem;
+    background: white;
+    border-radius: 1rem;
+    box-shadow: 0px 10px 10px 1px var(--primary-color);
+}
+
+.tabla-car{
+    width: 1000px;
+    margin: 3rem;
+    padding: 2rem;
+    background: white;
+    border-radius: 1rem;
+    border-collapse: collapse;
+}
+.tr-head th{
+    padding: 1rem;
+}
+
+
+
+.prod-carrito{
+    border-top: solid 1px var(--primary-color);
+    border-bottom: solid 1px var(--primary-color);
+}
+
+.prod-carrito th{
+    text-align: center;
+    padding: 0.5rem;
+}
+.prod-carrito th p {
+    
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.prod-carrito th button{
+    background: white;
+    border: solid 1px var(--primary-color);
+    padding: 0.3rem;
+    margin: 0 0.5rem;
+    transition: transform 1s ease;
+}
+
+.prod-carrito th button:focus{
+    transform: scaleZ(1.5);
+    transition: transform 1s ease;
+}
+
+.prod-carrito picture img{
+    width: 50px;
+    height: 50px;
+}
+
+.tabla-car tfoot tr th{
+    padding: 1rem;
+}
+
+
+/*---*/
+.paginacion {
+    text-align: center;
+    margin: 20px 0;
+}
+
+.btn-pagina {
+    margin: 0 5px;
+    padding: 6px 12px;
+    border: none;
+    background-color: var(--text-dark);
+    cursor: pointer;
+    color: white;
+    border-radius: 4px;
+}
+
+.btn-pagina.activa {
+    background-color: var(--primary-color);
+    color: black;
+}
+
+
 @media (max-width: 1024px){
     header{
         max-width: 100vw;
@@ -310,9 +435,10 @@ header{
         display: flex;
         flex-direction: column;
         align-items: center;
+        max-width: 100vw;
     }
     footer{
-        max-width: 100vw;
+        width: 100vw;
     }
         /*header*/
     .img_logo{
@@ -332,14 +458,27 @@ header{
 
     /*ventas*/
     .conteiner-cart{
-        align-content: normal;
+        
     }
     .ventas {
-        height: 160vh;/*Cambiar en el futuro para que no se modifique de aca*/
+        height: 100vh; /*Cambiar en el futuro para que no se modifique de aca*/
     }
     .port-venta {
         margin: 1rem 1.5rem;
     }
+
+    /*Carrito*/
+
+    #th-img{
+        display: none;
+    }
+
+    .tabla-car{
+        margin: 0;
+        margin-bottom: 3rem;
+        width: 850px;
+    }
+
     /*footer*/
     .img_logo_footer{
     
@@ -358,7 +497,7 @@ header{
     .mitad-izq li {
         margin: 0;
     }
-
+    
     /*---*/
     .mitad-der{
         align-items: end;
@@ -370,6 +509,7 @@ header{
     .mitad-der li {
         margin: 0;
     } 
+
 }
 
 @media (max-width: 550px){
@@ -388,6 +528,15 @@ header{
         margin: 0;
         font-size: 12px;
     }
+    /*Carrito*/
+    .tabla-car{
+        width: 0px;
+    }
+    .prod-carrito th p{
+        
+        width: 100px;
+    }
+
     /*footer*/
     .img_logo_footer{
     
