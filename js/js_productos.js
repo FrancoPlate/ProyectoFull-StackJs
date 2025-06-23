@@ -226,7 +226,7 @@ function cargarCarrito(){
             <th > <p>${producto.nombre}</p></th>
             <th  >${producto.precio}</th>
             <th >${numeroUnidades}</th>
-            <th ><button id="mas" data-id="${producto.id}">+</button><button id="menos" data-id="${producto.id}">-</button></th>
+            <th ><button id="menos" data-id="${producto.id}">-</button><button id="mas" data-id="${producto.id}">+</button></th>
             <th >$ ${subtotal}</th>
         
         `;

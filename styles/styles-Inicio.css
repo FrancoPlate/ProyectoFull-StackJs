@@ -543,6 +543,11 @@ footer{
     .mitad-der li {
         margin: 0;
     } 
+    /**/
+    .conteiner-Rese {
+        width: 100%;
+        
+    }
     .Ubi {
         padding: 1rem;
         margin: 1rem;
@@ -633,6 +638,11 @@ footer{
     }
 
     /*Informacion adiccional*/
+
+    .conteiner-Rese::after,
+    .conteiner-Rese::before {
+        width: 100px;
+    }
 
 
     .conteiner-Info{

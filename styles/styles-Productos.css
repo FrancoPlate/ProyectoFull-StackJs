@@ -292,7 +292,7 @@ header{
 .port-venta picture img{
     height: 50%;
     width: 100%;
-    background-color: red;
+    
     border-radius: 0.5rem 0.5rem 0 0;
 }
 
@@ -427,6 +427,8 @@ header{
 }
 
 
+
+
 @media (max-width: 1024px){
     header{
         max-width: 100vw;
@@ -457,9 +459,7 @@ header{
     }
 
     /*ventas*/
-    .conteiner-cart{
-        
-    }
+    
     .ventas {
         height: 100vh; /*Cambiar en el futuro para que no se modifique de aca*/
     }
