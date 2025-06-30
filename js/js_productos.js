@@ -1,9 +1,14 @@
 //variables globales
+const precio = "$";
+const miLocalStorage = window.localStorage;
+let Num_Orden = 0;
+let pedido = [];
 let carrito = [];
 let productosGlobal = [];
 let filtro = [];
 let productosPorPagina = definirProductosPorPantalla();
 let paginaActual = 1;
+
 // Cargamos el JSON de forma asíncrona
 fetch('../img/productos.json') // Asegurate que la ruta sea correcta
   .then(response => response.json())
@@ -11,7 +16,9 @@ fetch('../img/productos.json') // Asegurate que la ruta sea correcta
     productosGlobal = data;
     cargarProductos(productosGlobal, 1);
     cargarCarritoGuardado();
+    cargarPedidosGuardado();
     cargarCarrito();
+    cargarPedido();
     Filtros()
     // Evento que detecta cuando se le da click a unos de los check del filtro
     document.querySelectorAll(".filtro-checkbox").forEach(checkbox => {
@@ -27,12 +34,13 @@ fetch('../img/productos.json') // Asegurate que la ruta sea correcta
         }
     });
 
+
+
   })
   .catch(error => console.error("Error al cargar el JSON:", error));
   
 
-const precio = "$";
-const miLocalStorage = window.localStorage;
+
   
 
 function definirProductosPorPantalla() {
@@ -75,7 +83,10 @@ function cargarProductos(productos, pagina = 1){
                 </picture>
                 <div class="des">
                     <h3 class="des-nombre">${producto.nombre}</h3>
+                    <div class="precio-Detalles">
                     <P class="des-precio">${precio}${producto.precio}</P>
+                    <button class="btn-detalles" data-id="${producto.id}">Más detalles</button>
+                    </div>
                     <button class="btn-agregar" data-id="${producto.id}">Agregar al carrito</button>
                 </div>
             
@@ -86,6 +97,9 @@ function cargarProductos(productos, pagina = 1){
         });
         container.querySelectorAll('.btn-agregar').forEach(boton =>{
             boton.addEventListener('click', ProductosAlCarrito);
+        });
+        container.querySelectorAll('.btn-detalles').forEach(boton =>{
+            boton.addEventListener('click', Detalles);
         });
 
         // Crear botones de paginación
@@ -108,7 +122,7 @@ function cargarProductos(productos, pagina = 1){
         console.warn(error)
     }
 }
-
+// Filtros
 function Filtros(){
 
     const Dfiltros = document.getElementById('filtros');
@@ -159,7 +173,7 @@ function Filtros(){
 
      
 }
-
+// Aplicacion de lo filtros
 function aplicarFiltros(){
     const checkboxes = document.querySelectorAll(".filtro-checkbox")
     const categoriasSeleccionadas = [];
@@ -181,7 +195,7 @@ function aplicarFiltros(){
 
     cargarProductos(productosFiltrados); // Recarga solo los productos filtrados
 }
-
+// Eniviar los productos al carrito
 function ProductosAlCarrito(event){
     const idProducto = event.target.getAttribute('data-id')
     carrito.push(idProducto);    
@@ -189,6 +203,7 @@ function ProductosAlCarrito(event){
     guardarCarrito();
 }
 
+// Cargado del carrito
 function cargarCarrito(){
     
     const Dcarrito = document.getElementById('bodytable');
@@ -224,6 +239,7 @@ function cargarCarrito(){
                 </picture>
             </th>
             <th > <p>${producto.nombre}</p></th>
+            
             <th  >${producto.precio}</th>
             <th >${numeroUnidades}</th>
             <th ><button id="menos" data-id="${producto.id}">-</button><button id="mas" data-id="${producto.id}">+</button></th>
@@ -236,6 +252,9 @@ function cargarCarrito(){
         
         
     })
+
+    
+    
     //Cada vez que se da click al boton se suma 1
     Dcarrito.querySelectorAll("#mas").forEach(btn => {
         btn.addEventListener("click", (e) => {
@@ -261,13 +280,153 @@ function cargarCarrito(){
     const tablef = document.createElement('tr');
     tablef.innerHTML= `
     
-        <th colspan="4" >TOTAL</th>
-        <th>$ ${totalProductos.toFixed(2)}</th>
+        <th colspan="2">TOTAL</th>
+        <th colspan="2">$ ${totalProductos.toFixed(2)}</th>
+        <th colspan="2"><button class="button-pedir" id="pedir">Pedir</button></th>
     
     `
     containertf.appendChild(tablef);
 
+    //evento para captar el click
+    document.querySelector('#pedir').addEventListener('click', () =>{
+        //si el carrito esta vacio retorna nada 
+        if(carrito.length === 0) return;
+        //traemos los campos del dialog de pedido
+        const dialogP = document.getElementById("dialog-pedido");
+        const modalProdu = document.getElementById("productos-Pedidos")
+        const textareaMensaje = document.getElementById("mensaje");
+        let mensajeFinal = "";
+        dialogP.showModal();
+
+        // Contamos cantidades
+        const carritoSinDuplicados = [...new Set(carrito)];
+        modalProdu.innerHTML = ""; // Limpiar antes de agregar
+
+        carritoSinDuplicados.forEach(id => {
+            const producto = productosGlobal.find(produ => produ.id == id);
+            const cantidad = carrito.filter(cant => cant == id).length;
+
+            if (producto) {
+                //mesanje para el Formspree
+                mensajeFinal += `${(producto.nombre)} (x${cantidad})\n`;
+                //creamos la lista de productoa a pedir
+                const nodo = document.createElement("li");
+                nodo.innerHTML = `
+                    <p name="Prodcuto">${cortarTexto(producto.nombre)} (x${cantidad}) - $${producto.precio*cantidad}</p>
+                `;
+                //aplicamos la lista 
+                modalProdu.appendChild(nodo);
+            }
+        });
+        //mesanje final para el Formspree
+        textareaMensaje.value = mensajeFinal;
+
+        document.getElementById("cerrar-dialog").addEventListener("click", ()=> {
+            dialogP.close();
+        });
+        document.getElementById("pedir-dialog").addEventListener("click", ()=> {
+            
+            Num_Orden = Num_Orden + 1; // auto sumamos el numero de orden 
+            console.log(Num_Orden)
+            const carritocarritoSinDuplicados = [...new Set(carrito)];
+            let total = 0;
+            const productoPedido = []; // array donde guardaremos los pedidos 
+
+            carritoSinDuplicados.forEach(id => {
+                const producto = productosGlobal.find(p => p.id === parseInt(id));
+                const cantidad = carrito.filter(pid => pid === id).length;
+                const subtotal = producto.precio * cantidad;
+                total += subtotal;
+
+                // Guardamos el producto
+                productoPedido.push({
+                    id:producto.id,
+                    nombre: producto.nombre,
+                    cantidad: cantidad,
+                    precio: producto.precio
+                });
+            });
+
+            // Guardamos el pedido
+            pedido.push({
+                nuumeroOrden: Num_Orden,
+                productos: productoPedido,
+                total: total
+            });
+
+            carrito = []; // vaciar carrito
+            guardarCarrito(); // actualizar localStorage
+            guardarPedidos(); // actualizar localStorage
+            cargarCarrito(); // actualizar vista
+            cargarPedido(); // mostrar pedidos
+            
+            dialogP.close();
+            
+        });
+        
+        //-------------------------------------------------------------
+        
+
+
+    });
+
 }
+
+
+// Cargado de los pedidos
+function cargarPedido() {
+
+
+  const Dpedido = document.getElementById('bodytable2');
+  Dpedido.textContent = "";
+
+  pedido.forEach(orden => {
+    
+    const nodo = document.createElement('tr');
+    nodo.classList.add("prod-pedido")
+    const productosTexto = orden.productos.map(p => `${cortarTexto(p.nombre)} (x${p.cantidad})`).join("<br>");
+
+    nodo.innerHTML = `   
+      <th>#${orden.nuumeroOrden}</th>
+      <th>${orden.productos.length}</th>
+      <th>${productosTexto}</th>
+      <th>$ ${orden.total.toFixed(2)}</th>
+    `;
+
+    Dpedido.appendChild(nodo);
+  });
+}
+
+function Detalles(event){
+    const idProducto = event.target.getAttribute('data-id')
+    console.log(idProducto)
+    
+    const dialog = document.getElementById("dialog-detalle");
+    const modalImg = document.getElementById("modal-img");
+    const modalNombre = document.getElementById("modal-nombre");
+    const modalDescripcion = document.getElementById("modal-descripcion");
+    const modalStock = document.getElementById("modal-stock");
+    const modalPrecio = document.getElementById("modal-precio");
+    console.log(idProducto)
+    
+    
+    const producto = productosGlobal.find(p => p.id == idProducto);
+    //si producto esta vacio retornamos
+    if(!producto) return
+    //si no esta vacio retornamos la informacion:
+    modalImg.src = producto.imagen;
+    modalNombre.textContent = producto.nombre;
+    modalDescripcion.textContent = producto.descripcion || "Sin descripción.";
+    modalStock.textContent = `Stock: ${producto.stock}`
+    modalPrecio.textContent = `Precio: $${producto.precio}`;
+    dialog.showModal();
+    
+
+    document.getElementById("cerrar-dialog").addEventListener("click", ()=> {
+        dialog.close();
+    });
+}
+
 
 function guardarCarrito(){
     miLocalStorage.setItem("carrito", JSON.stringify(carrito));
@@ -280,3 +439,25 @@ function cargarCarritoGuardado(){
         carrito = JSON.parse(miLocalStorage.getItem("carrito"))
     }
 }
+
+function guardarPedidos(){
+    miLocalStorage.setItem("pedido", JSON.stringify(pedido));
+}
+
+function cargarPedidosGuardado(){
+    //verificamos si hay algo guardado en el localStorage
+    if(miLocalStorage.getItem("pedido") !== null){
+        //si es asi carga la informacion
+        pedido = JSON.parse(miLocalStorage.getItem("pedido"))
+    }
+}
+
+function cortarTexto(texto) {
+  if (texto.length > 20) {
+    return texto.substring(0, 20) + "...";
+  } else {
+    return texto;
+  }
+}
+
+

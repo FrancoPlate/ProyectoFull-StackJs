@@ -70,38 +70,65 @@
         </section>
         <div id="paginacion" class="paginacion"></div>
         <span class="Informar">
-            <p>Todo producto se tendra que pasar a retirar por el local, no hacemos repartos.</p>
+            <p>Todo producto se tendra que pasar a retirar por el local, no hacemos repartos. Cada Pedido dura una semana, pasado la semana se cancela.</p>
         </span>
         
         <a id="Car" ></a>
         <section class="Carrito">
-            
-            <h2>🛒 Carrito</h2>
+            <div>
+                <h2>🛒 Carrito</h2>
 
-            <table class="tabla-car">
-                <thead>
-                    <tr class="tr-head">
+                <table class="tabla-car">
+                    <thead>
+                        <tr class="tr-head">
+                            
+                            <th scope="col" id="th-img">Producto</th>
+                            <th scope="col" >Nombre</th>
+                            <th scope="col">Precio</th>
+                            <th scope="col">Cantidad</th>
+                            <th scope="col">Acción</th>
+                            <th scope="col">Total</th>
+
+                        </tr>
+                    </thead>
+
+                    <tbody id="bodytable">
+
+                    </tbody>
+
+                    <tfoot id="table-foot">
                         
-                        <th scope="col" id="th-img">Producto</th>
-                        <th scope="col" >Nombre</th>
-                        <th scope="col">Precio</th>
-                        <th scope="col">Cantidad</th>
-                        <th scope="col">Acción</th>
-                        <th scope="col">Total</th>
 
-                    </tr>
-                </thead>
+                    </tfoot>
+                </table>
 
-                <tbody id="bodytable">
+            </div>
 
-                </tbody>
+            <div>
+                <h2>📦 Pedido</h2>
 
-                <tfoot id="table-foot">
-                    
+                <table class="tabla-car">
+                    <thead>
+                        <tr class="tr-head">
+                            
+                            <th scope="col">N° Orden</th>
+                            <th scope="col">Cant. Productos</th>
+                            <th scope="col">Productos Totales</th>
+                            <th scope="col">Total</th>
 
-                </tfoot>
-            </table>
-            
+                        </tr>
+                    </thead>
+
+                    <tbody id="bodytable2">
+
+                    </tbody>
+
+                    <tfoot id="table-foot">
+                        
+
+                    </tfoot>
+                </table>
+            </div>
 
         </section>
         
@@ -207,4 +234,50 @@
     </footer>
     <script src="../js/js_productos.js"></script>
 </body>
+<!-- se mostrara cuando se quiera saber mas del producto -->
+<dialog id="dialog-detalle" class="modal-producto" closedby="any">
+  <div class="modal-contenido">
+    <img id="modal-img" src="" alt="Imagen del producto">
+    <div class="modal-info">
+      <h2 id="modal-nombre"></h2>
+      <p id="modal-descripcion"></p>
+      <div>
+          <p id="modal-stock"></p>
+          <p id="modal-precio"></p>
+      </div>
+      <button id="cerrar-dialog" class="cerrar-dialog">Cerrar</button>
+    </div>
+  </div>
+</dialog>
+
+<!-- se mostrara cuando se quiera pedir el producto -->
+<dialog id="dialog-pedido" class="modal-producto"  closedby="any">
+    <form class="modal-contenido" 
+        action="https://formspree.io/f/mjkyjyor"
+        method="POST"
+    >
+        <div class="modal-pedi">
+            <h1>Datos Para Retirar</h1>
+            
+            <div class="modal-input">
+                <label for="Nombre">Nombre</label>
+                <input type="text" name="Nombre" placeholder="" required>
+            </div>
+            <div class="modal-input">
+                <label for="Apellido">Apellido</label>
+                <input type="text" name="Apellido"  placeholder="" required>
+            </div>
+            
+            <ul id="productos-Pedidos">
+            </ul>
+            
+            <textarea name="message" id="mensaje" style="display:none;"></textarea>
+            <div class="modal-btns">
+                <button class="cerrar" id="cerrar-dialog" >Cerrar</button>
+                <button id="pedir-dialog" class="pedir">Pedir</button>
+            </div>
+        </div>
+    </form>
+</dialog>
+
 </html>
