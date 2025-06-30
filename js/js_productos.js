@@ -324,20 +324,21 @@ function cargarCarrito(){
         document.getElementById("cerrar-dialog").addEventListener("click", ()=> {
             dialogP.close();
         });
+
+        const productoPedido = []; // array donde guardaremos los pedidos 
+        let total = 0;
+
         document.getElementById("pedir-dialog").addEventListener("click", ()=> {
             
             Num_Orden = Num_Orden + 1; // auto sumamos el numero de orden 
-            console.log(Num_Orden)
+            
             const carritocarritoSinDuplicados = [...new Set(carrito)];
-            let total = 0;
-            const productoPedido = []; // array donde guardaremos los pedidos 
-
+            
             carritoSinDuplicados.forEach(id => {
                 const producto = productosGlobal.find(p => p.id === parseInt(id));
                 const cantidad = carrito.filter(pid => pid === id).length;
                 const subtotal = producto.precio * cantidad;
                 total += subtotal;
-
                 // Guardamos el producto
                 productoPedido.push({
                     id:producto.id,
@@ -346,7 +347,7 @@ function cargarCarrito(){
                     precio: producto.precio
                 });
             });
-
+            
             // Guardamos el pedido
             pedido.push({
                 nuumeroOrden: Num_Orden,
