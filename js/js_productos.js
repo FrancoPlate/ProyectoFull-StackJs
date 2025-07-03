@@ -40,9 +40,6 @@ fetch('../img/productos.json') // Asegurate que la ruta sea correcta
   .catch(error => console.error("Error al cargar el JSON:", error));
   
 
-
-  
-
 function definirProductosPorPantalla() {
   const ancho = window.innerWidth;
 
@@ -248,13 +245,8 @@ function cargarCarrito(){
         `;
 
         Dcarrito.appendChild(nodo);
-
-        
-        
     })
-
-    
-    
+   
     //Cada vez que se da click al boton se suma 1
     Dcarrito.querySelectorAll("#mas").forEach(btn => {
         btn.addEventListener("click", (e) => {
@@ -289,7 +281,13 @@ function cargarCarrito(){
 
     //evento para captar el click
     document.querySelector('#pedir').addEventListener('click', () =>{
-        //si el carrito esta vacio retorna nada 
+        TomarPedido();
+    });
+
+}
+
+function TomarPedido(){
+    //si el carrito esta vacio retorna nada 
         if(carrito.length === 0) return;
         //traemos los campos del dialog de pedido
         const dialogP = document.getElementById("dialog-pedido");
@@ -332,7 +330,7 @@ function cargarCarrito(){
             
             Num_Orden = Num_Orden + 1; // auto sumamos el numero de orden 
             
-            const carritocarritoSinDuplicados = [...new Set(carrito)];
+            const carritoSinDuplicados = [...new Set(carrito)];
             
             carritoSinDuplicados.forEach(id => {
                 const producto = productosGlobal.find(p => p.id === parseInt(id));
@@ -364,15 +362,7 @@ function cargarCarrito(){
             dialogP.close();
             
         });
-        
-        //-------------------------------------------------------------
-        
-
-
-    });
-
 }
-
 
 // Cargado de los pedidos
 function cargarPedido() {
