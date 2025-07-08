@@ -34,7 +34,7 @@ fetch('../img/productos.json') // Asegurate que la ruta sea correcta
         }
     });
 
-
+    console.log(paginaActual)
 
   })
   .catch(error => console.error("Error al cargar el JSON:", error));
@@ -54,21 +54,55 @@ function definirProductosPorPantalla() {
     }
 }
 
+// Eniviar los productos al carrito
+function ProductosAlCarrito(event){
+    const idProducto = event.target.getAttribute('data-id')
+    carrito.push(idProducto);    
+    cargarCarrito();
+    guardarCarrito();
+}
+
+function Paginacion(productos,pagina){
+    console.log(paginaActual)
+    const paginacion = document.getElementById("paginacion");
+    paginacion.innerHTML = ""; // limpiamos paginación
+
+    const totalPaginas = Math.ceil(productos.length / productosPorPagina);
+    // Crear botones de paginación
+    for (let i = 1; i <= totalPaginas; i++) {
+        const botonPagina = document.createElement("button");
+        botonPagina.textContent = i;
+        botonPagina.classList.add("btn-pagina");
+
+        if (i === pagina) {
+            
+            botonPagina.classList.add("activa");
+        }
+
+        botonPagina.addEventListener("click", () => {
+            paginaActual = i
+            cargarProductos(productos, paginaActual);
+        });
+
+        paginacion.appendChild(botonPagina);
+    }
+
+    
+
+}
 
 // cargar los productos
-function cargarProductos(productos, pagina = 1){
+function cargarProductos(productos, pagina){
    
     try{
-        
-
         const container = document.getElementById("conteiner-Productos")
-        const paginacion = document.getElementById("paginacion");
         container.innerHTML = ""; // limpiamos productos
-        paginacion.innerHTML = ""; // limpiamos paginación
 
         // calcular los índices para cortar el array
         const inicio = (pagina - 1) * productosPorPagina;
         const fin = inicio + productosPorPagina;
+
+        //copia una parte de un arreglo
         const productosPagina = productos.slice(inicio, fin);
 
         productosPagina.forEach(producto => {
@@ -99,21 +133,7 @@ function cargarProductos(productos, pagina = 1){
             boton.addEventListener('click', Detalles);
         });
 
-        // Crear botones de paginación
-        const totalPaginas = Math.ceil(productos.length / productosPorPagina);
-        for (let i = 1; i <= totalPaginas; i++) {
-            const botonPagina = document.createElement("button");
-            botonPagina.textContent = i;
-            botonPagina.classList.add("btn-pagina");
-            if (i === pagina) {
-                botonPagina.classList.add("activa");
-            }
-            botonPagina.addEventListener("click", () => {
-                paginaActual = i;
-                cargarProductos(productos, i);
-            });
-            paginacion.appendChild(botonPagina);
-        }
+        Paginacion(productos,pagina)
 
     }catch(error){
         console.warn(error)
@@ -192,13 +212,7 @@ function aplicarFiltros(){
 
     cargarProductos(productosFiltrados); // Recarga solo los productos filtrados
 }
-// Eniviar los productos al carrito
-function ProductosAlCarrito(event){
-    const idProducto = event.target.getAttribute('data-id')
-    carrito.push(idProducto);    
-    cargarCarrito();
-    guardarCarrito();
-}
+
 
 // Cargado del carrito
 function cargarCarrito(){
@@ -228,21 +242,39 @@ function cargarCarrito(){
         //Creamos el espacio de los productos
         const nodo = document.createElement('tr');
         nodo.classList.add("prod-carrito");
-        //Creamos el espacio de los productos
-        nodo.innerHTML = `   
-            <th id="th-img">
-                <picture>
-                    <img src="${producto.imagen}" alt="">
-                </picture>
-            </th>
-            <th > <p>${producto.nombre}</p></th>
+        if(window.innerWidth < 1000){
+            //Creamos el espacio de los productos
+            nodo.innerHTML = `   
+                <th id="th-img">
+                    <picture>
+                        <img src="${producto.imagen}" alt="">
+                    </picture>
+                </th>
+                <th><p> ${cortarTexto(producto.nombre, 15)}</p></th>
+                <th>${producto.precio}</th>
+                <th>${numeroUnidades}</th>
+                <th><button id="menos" data-id="${producto.id}">-</button><button id="mas" data-id="${producto.id}">+</button><button id="borrar" data-id="${producto.id}">x</button></th>
+                <th>$ ${subtotal}</th>
             
-            <th  >${producto.precio}</th>
-            <th >${numeroUnidades}</th>
-            <th ><button id="menos" data-id="${producto.id}">-</button><button id="mas" data-id="${producto.id}">+</button></th>
-            <th >$ ${subtotal}</th>
-        
-        `;
+            `;
+        }else{
+            //Creamos el espacio de los productos
+            nodo.innerHTML = `   
+                <th id="th-img">
+                    <picture>
+                        <img src="${producto.imagen}" alt="">
+                    </picture>
+                </th>
+                <th > <p>${producto.nombre}</p></th>
+                
+                <th  >${producto.precio}</th>
+                <th >${numeroUnidades}</th>
+                <th ><button id="menos" data-id="${producto.id}">-</button><button id="mas" data-id="${producto.id}">+</button><button id="borrar" data-id="${producto.id}">x</button></th>
+                <th >$ ${subtotal}</th>
+            
+            `;
+        }
+
 
         Dcarrito.appendChild(nodo);
     })
@@ -286,6 +318,41 @@ function cargarCarrito(){
 
 }
 
+function PedidoTomado(){
+    const productoPedido = []; // array donde guardaremos los pedidos 
+    let total = 0;
+    Num_Orden = Num_Orden + 1; // auto sumamos el numero de orden 
+            
+    const carritoSinDuplicados = [...new Set(carrito)];
+    
+    carritoSinDuplicados.forEach(id => {
+        const producto = productosGlobal.find(p => p.id === parseInt(id));
+        const cantidad = carrito.filter(pid => pid === id).length;
+        const subtotal = producto.precio * cantidad;
+        total += subtotal;
+        // Guardamos el producto
+        productoPedido.push({
+            id:producto.id,
+            nombre: producto.nombre,
+            cantidad: cantidad,
+            precio: producto.precio
+        });
+    });
+    
+    // Guardamos el pedido
+    pedido.push({
+        nuumeroOrden: Num_Orden,
+        productos: productoPedido,
+        total: total
+    });
+
+    carrito = []; // vaciar carrito
+    guardarCarrito(); // actualizar localStorage
+    guardarPedidos(); // actualizar localStorage
+    cargarCarrito(); // actualizar vista
+    cargarPedido(); // mostrar pedidos
+}
+
 function TomarPedido(){
     //si el carrito esta vacio retorna nada 
         if(carrito.length === 0) return;
@@ -310,7 +377,7 @@ function TomarPedido(){
                 //creamos la lista de productoa a pedir
                 const nodo = document.createElement("li");
                 nodo.innerHTML = `
-                    <p name="Prodcuto">${cortarTexto(producto.nombre)} (x${cantidad}) - $${producto.precio*cantidad}</p>
+                    <p name="Prodcuto">${cortarTexto(producto.nombre, 20)} (x${cantidad}) - $${producto.precio*cantidad}</p>
                 `;
                 //aplicamos la lista 
                 modalProdu.appendChild(nodo);
@@ -323,42 +390,9 @@ function TomarPedido(){
             dialogP.close();
         });
 
-        const productoPedido = []; // array donde guardaremos los pedidos 
-        let total = 0;
-
         document.getElementById("pedir-dialog").addEventListener("click", ()=> {
             
-            Num_Orden = Num_Orden + 1; // auto sumamos el numero de orden 
-            
-            const carritoSinDuplicados = [...new Set(carrito)];
-            
-            carritoSinDuplicados.forEach(id => {
-                const producto = productosGlobal.find(p => p.id === parseInt(id));
-                const cantidad = carrito.filter(pid => pid === id).length;
-                const subtotal = producto.precio * cantidad;
-                total += subtotal;
-                // Guardamos el producto
-                productoPedido.push({
-                    id:producto.id,
-                    nombre: producto.nombre,
-                    cantidad: cantidad,
-                    precio: producto.precio
-                });
-            });
-            
-            // Guardamos el pedido
-            pedido.push({
-                nuumeroOrden: Num_Orden,
-                productos: productoPedido,
-                total: total
-            });
-
-            carrito = []; // vaciar carrito
-            guardarCarrito(); // actualizar localStorage
-            guardarPedidos(); // actualizar localStorage
-            cargarCarrito(); // actualizar vista
-            cargarPedido(); // mostrar pedidos
-            
+            PedidoTomado()
             dialogP.close();
             
         });
@@ -375,7 +409,7 @@ function cargarPedido() {
     
     const nodo = document.createElement('tr');
     nodo.classList.add("prod-pedido")
-    const productosTexto = orden.productos.map(p => `${cortarTexto(p.nombre)} (x${p.cantidad})`).join("<br>");
+    const productosTexto = orden.productos.map(p => `${cortarTexto(p.nombre,20)} (x${p.cantidad})`).join("<br>");
 
     nodo.innerHTML = `   
       <th>#${orden.nuumeroOrden}</th>
@@ -443,9 +477,9 @@ function cargarPedidosGuardado(){
     }
 }
 
-function cortarTexto(texto) {
-  if (texto.length > 20) {
-    return texto.substring(0, 20) + "...";
+function cortarTexto(texto, longitud) {
+  if (texto.length > longitud) {
+    return texto.substring(0, longitud) + "...";
   } else {
     return texto;
   }

@@ -220,9 +220,9 @@ header{
 
 /*------ ventas--------*/
 .ventas{
-    width: 99vw;
     height: 96vh;
     display: flex;
+    justify-content: center;
 }
 
 .filtros{
@@ -631,12 +631,17 @@ header{
     }
 
     /*ventas*/
+
+    .prod-carrito th p{
+        width: auto;
+    }
     
     .ventas {
         height: 100vh; /*Cambiar en el futuro para que no se modifique de aca*/
     }
     .port-venta {
-        margin: 1rem 1.5rem;
+        margin: 1rem 0rem;
+        margin-left: 3rem;
     }
 
     /*Carrito*/
@@ -647,6 +652,7 @@ header{
 
     .Carrito{
         flex-direction: column;
+        align-items: center;
     }
 
     .tabla-car{
@@ -704,7 +710,16 @@ header{
         margin: 0;
         font-size: 12px;
     }
+
+    #nav-Produ{
+        display: none;
+    }
     /*Carrito*/
+
+    .tr-head th {
+        padding: 0.5rem;
+    }
+
     .tabla-car{
         width: 0px;
     }
