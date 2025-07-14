@@ -14,7 +14,7 @@ fetch('../img/productos.json') // Asegurate que la ruta sea correcta
   .then(response => response.json())
   .then(data => {
     productosGlobal = data;
-    cargarProductos(productosGlobal, 1);
+    cargarProductos(productosGlobal);
     cargarCarritoGuardado();
     cargarPedidosGuardado();
     cargarCarrito();
@@ -33,9 +33,6 @@ fetch('../img/productos.json') // Asegurate que la ruta sea correcta
             cargarCarrito()
         }
     });
-
-    console.log(paginaActual)
-
   })
   .catch(error => console.error("Error al cargar el JSON:", error));
   
@@ -63,36 +60,28 @@ function ProductosAlCarrito(event){
 }
 
 function Paginacion(productos,pagina){
-    console.log(paginaActual)
     const paginacion = document.getElementById("paginacion");
     paginacion.innerHTML = ""; // limpiamos paginación
 
-    const totalPaginas = Math.ceil(productos.length / productosPorPagina);
     // Crear botones de paginación
+    const totalPaginas = Math.ceil(productos.length / productosPorPagina);
     for (let i = 1; i <= totalPaginas; i++) {
         const botonPagina = document.createElement("button");
         botonPagina.textContent = i;
         botonPagina.classList.add("btn-pagina");
-
         if (i === pagina) {
-            
             botonPagina.classList.add("activa");
         }
-
         botonPagina.addEventListener("click", () => {
-            paginaActual = i
+            paginaActual = i;
             cargarProductos(productos, paginaActual);
         });
-
         paginacion.appendChild(botonPagina);
     }
-
-    
-
 }
 
 // cargar los productos
-function cargarProductos(productos, pagina){
+function cargarProductos(productos, pagina = 1){
    
     try{
         const container = document.getElementById("conteiner-Productos")
@@ -134,6 +123,7 @@ function cargarProductos(productos, pagina){
         });
 
         Paginacion(productos,pagina)
+        
 
     }catch(error){
         console.warn(error)
@@ -213,7 +203,6 @@ function aplicarFiltros(){
     cargarProductos(productosFiltrados); // Recarga solo los productos filtrados
 }
 
-
 // Cargado del carrito
 function cargarCarrito(){
     
@@ -278,27 +267,43 @@ function cargarCarrito(){
 
         Dcarrito.appendChild(nodo);
     })
-   
+    
     //Cada vez que se da click al boton se suma 1
     Dcarrito.querySelectorAll("#mas").forEach(btn => {
         btn.addEventListener("click", (e) => {
             const id = e.target.getAttribute("data-id");
-            carrito.push(id); // Agrega uno más
-            guardarCarrito();
-            cargarCarrito();
-    });
+            const index = carrito.indexOf(id); //busca en donde se encuentra el primer valor del id
+            if (index !== -1){
+                carrito.splice(index, 0 , id); // Agrega uno más [ index =  posición a insertar; 0 = no eliminar; id= elemento a agregar]
+                guardarCarrito();
+                cargarCarrito();
+            }
+        });
     });
     //Cada vez que se da click al boton se resta 1, si es que existe
     Dcarrito.querySelectorAll("#menos").forEach(btn => {
         btn.addEventListener("click", (e) => {
             const id = e.target.getAttribute("data-id");
-            const index = carrito.indexOf(id);
+            const index = carrito.indexOf(id); //busca en donded se encuentra el primer valor del id, si no lo encuentra devolvera -1
             if (index !== -1) {
             carrito.splice(index, 1); // Quita uno
             guardarCarrito();
             cargarCarrito();
             }
+        });
     });
+
+    //Cada vez que se da click al boton se resta 1, si es que existe
+    Dcarrito.querySelectorAll("#borrar").forEach(btn => {
+        btn.addEventListener("click", (e) => {
+            const id = e.target.getAttribute("data-id");
+            const nuevoC = carrito
+            carrito = nuevoC.filter(n => n !== id) // Quita todos los productos que tengan el mismo id
+            console.log()
+            guardarCarrito();
+            cargarCarrito();
+            
+        });
     });
 
     const tablef = document.createElement('tr');
